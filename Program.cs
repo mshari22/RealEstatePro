@@ -42,12 +42,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 
-// Support Render.com reverse proxy headers
-app.UseForwardedHeaders(new Microsoft.AspNetCore.HttpOverrides.ForwardedHeadersOptions
-{
-    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor |
-                       Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
-});
+// Forwarded headers for Render.com are enabled via ASPNETCORE_FORWARDEDHEADERS_ENABLED env var
 app.UseStaticFiles();
 
 app.UseRouting();
