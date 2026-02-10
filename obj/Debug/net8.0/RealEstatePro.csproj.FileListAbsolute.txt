@@ -131,3 +131,4 @@ C:\Users\Mshari2237\Desktop\RealEstatePro\RealEstatePro\obj\Debug\net8.0\refint\
 C:\Users\Mshari2237\Desktop\RealEstatePro\RealEstatePro\obj\Debug\net8.0\RealEstatePro.pdb
 C:\Users\Mshari2237\Desktop\RealEstatePro\RealEstatePro\obj\Debug\net8.0\RealEstatePro.genruntimeconfig.cache
 C:\Users\Mshari2237\Desktop\RealEstatePro\RealEstatePro\obj\Debug\net8.0\ref\RealEstatePro.dll
+C:\Users\Mshari2237\Desktop\RealEstatePro\RealEstatePro\obj\Debug\net8.0\RealEstatePro.sourcelink.json
