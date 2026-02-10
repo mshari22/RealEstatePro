@@ -1,0 +1,128 @@
+@model RealEstatePro.ViewModels.PropertyListViewModel
+@inject RealEstatePro.Services.ITranslationService TranslationService
+@{
+    ViewData["Title"] = "Properties";
+    var currentCulture = Context.Request.Cookies["Language"] ?? "en";
+    var t = TranslationService.GetTranslations(currentCulture);
+}
+
+<div class="container" style="padding: 2rem 1.25rem;">
+    <div style="margin-bottom: 2rem;">
+        <h1 class="section-title">@t["nav_browse"]</h1>
+        
+        <form method="get" class="glass-panel" style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: end;">
+            <div class="form-group" style="margin: 0;">
+                <label class="form-label">@t["location"]</label>
+                <input type="text" name="Location" value="@Model.SearchTerm" class="form-control" placeholder="@t["search_placeholder"]" />
+            </div>
+            
+            <div class="form-group" style="margin: 0;">
+                <label class="form-label">@t["category"]</label>
+                @{
+                    var categories = new[] { "apartment", "villa", "land", "commercial" };
+                }
+                <select name="Category" class="form-control">
+                    <option value="">@t["all_categories"]</option>
+                    @foreach (var cat in categories)
+                    {
+                        if (Model.CurrentCategory == cat)
+                        {
+                            <option value="@cat" selected="selected">@t[cat]</option>
+                        }
+                        else
+                        {
+                            <option value="@cat">@t[cat]</option>
+                        }
+                    }
+                </select>
+            </div>
+            
+            <div class="form-group" style="margin: 0;">
+                <label class="form-label">@t["min_price"]</label>
+                <input type="number" name="MinPrice" value="@Model.MinPrice" class="form-control" />
+            </div>
+            
+            <div class="form-group" style="margin: 0;">
+                <label class="form-label">@t["max_price"]</label>
+                <input type="number" name="MaxPrice" value="@Model.MaxPrice" class="form-control" />
+            </div>
+            
+            <button type="submit" class="btn btn-primary">@t["btn_search"]</button>
+        </form>
+    </div>
+    
+    <!-- Map View -->
+    <div class="glass-panel" style="margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;">📍 @t["location"]</h3>
+        <div id="map" style="height: 380px; width: 100%; border-radius: 0.75rem; z-index: 1;"></div>
+    </div>
+
+    @if (!Model.Properties.Any())
+    {
+        <div class="glass-panel" style="text-align: center; padding: 4rem;">
+            <p style="font-size: 1.25rem; color: var(--text-light); margin-bottom: 0.5rem;">@t["no_properties"]</p>
+            <p style="color: var(--text-light);">@t["be_first"]</p>
+            <a asp-controller="Properties" asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;">@t["add_property"]</a>
+        </div>
+    }
+    else
+    {
+        <div class="property-grid">
+            @foreach (var item in Model.Properties)
+            {
+                <div class="card">
+                    <img src="@item.ImageUrl" alt="@item.Title" class="card-img" 
+                         onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop'" />
+                    <div class="card-body">
+                        <div class="card-price">
+                            @item.Price.ToString("N0") <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-light);">@t["sar"]</span>
+                        </div>
+                        <h3 class="card-title">@item.Title</h3>
+                        <div class="card-features">
+                            <span class="feature">🛏️ @item.Bedrooms</span>
+                            <span class="feature">🛁 @item.Bathrooms</span>
+                            <span class="feature">📏 @item.Area @t["sqm"]</span>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-light); flex-wrap: wrap;">
+                            <span>📍 @item.Location</span>
+                            <span>🏷️ @t[item.PropertyType]</span>
+                        </div>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary" style="width: 100%;">@t["view_details"]</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var map = L.map('map').setView([24.7136, 46.6753], 11);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            var properties = @Html.Raw(Json.Serialize(Model.Properties.Select(p => new { p.Id, p.Title, p.Price, p.Latitude, p.Longitude })));
+            
+            var bounds = [];
+
+            properties.forEach(function(p) {
+                if (p.latitude !== 0 && p.longitude !== 0) {
+                    var marker = L.marker([p.latitude, p.longitude]).addTo(map);
+                    marker.bindPopup(
+                        '<strong>' + p.title + '</strong><br>' +
+                        p.price.toLocaleString() + ' SAR<br>' +
+                        '<a href="/Properties/Details/' + p.id + '">View →</a>'
+                    );
+                    bounds.push([p.latitude, p.longitude]);
+                }
+            });
+
+            if (bounds.length > 0) {
+                map.fitBounds(bounds, { padding: [30, 30] });
+            }
+        });
+    </script>
+}

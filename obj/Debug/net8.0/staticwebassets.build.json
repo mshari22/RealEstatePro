@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "HlvE46QGKRsYvsjfSWLzDTUWknuCfmaZTxRjFdP58qw=",
+  "Source": "RealEstatePro",
+  "BasePath": "_content/RealEstatePro",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "RealEstatePro\\wwwroot",
+      "Source": "RealEstatePro",
+      "ContentRoot": "C:\\Users\\Mshari2237\\Desktop\\RealEstatePro\\RealEstatePro\\wwwroot\\",
+      "BasePath": "_content/RealEstatePro",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Mshari2237\\Desktop\\RealEstatePro\\RealEstatePro\\wwwroot\\css\\style.css",
+      "SourceId": "RealEstatePro",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Mshari2237\\Desktop\\RealEstatePro\\RealEstatePro\\wwwroot\\",
+      "BasePath": "_content/RealEstatePro",
+      "RelativePath": "css/style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\style.css"
+    }
+  ]
+}

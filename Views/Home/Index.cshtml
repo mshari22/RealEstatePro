@@ -1,0 +1,66 @@
+@model IEnumerable<RealEstatePro.Models.Property>
+@inject RealEstatePro.Services.ITranslationService TranslationService
+@{
+    ViewData["Title"] = "Home";
+    var currentCulture = Context.Request.Cookies["Language"] ?? "en";
+    var t = TranslationService.GetTranslations(currentCulture);
+}
+
+<div class="hero">
+    <div class="hero-content">
+        <h1>@t["hero_title"]</h1>
+        <p>@t["hero_subtitle"]</p>
+        
+        <form asp-controller="Properties" asp-action="Index" method="get" style="display: flex; gap: 0.5rem; justify-content: center; max-width: 550px; margin: 0 auto;">
+            <input type="text" name="Location" class="form-control" placeholder="@t["search_placeholder"]" style="flex: 1; border: 1px solid rgba(255,255,255,0.2);" />
+            <button type="submit" class="btn btn-primary">@t["btn_search"]</button>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <section style="margin-bottom: 4rem;">
+        <div class="section-header">
+            <h2 class="section-title">@t["featured_properties"]</h2>
+            <a asp-controller="Properties" asp-action="Index" class="btn btn-outline">@t["view_all"] →</a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="glass-panel" style="text-align: center; padding: 4rem;">
+                <p style="font-size: 1.25rem; color: var(--text-light); margin-bottom: 0.5rem;">@t["no_properties"]</p>
+                <p style="color: var(--text-light);">@t["be_first"]</p>
+                <a asp-controller="Properties" asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;">@t["add_property"]</a>
+            </div>
+        }
+        else
+        {
+            <div class="property-grid">
+                @foreach (var item in Model)
+                {
+                    <div class="card">
+                        <img src="@item.ImageUrl" alt="@item.Title" class="card-img" 
+                             onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop'" />
+                        <div class="card-body">
+                            <div class="card-price">
+                                @item.Price.ToString("N0") <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-light);">@t["sar"]</span>
+                            </div>
+                            <h3 class="card-title">@item.Title</h3>
+                            <div class="card-features">
+                                <span class="feature">🛏️ @item.Bedrooms</span>
+                                <span class="feature">🛁 @item.Bathrooms</span>
+                                <span class="feature">📏 @item.Area @t["sqm"]</span>
+                            </div>
+                            <div style="margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-light);">
+                                <span>📍 @item.Location</span>
+                            </div>
+                            <a asp-controller="Properties" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary" style="width: 100%;">
+                                @t["view_details"]
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+</div>

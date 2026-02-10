@@ -1,0 +1,51 @@
+@model IEnumerable<RealEstatePro.DTOs.Property.PropertyDto>
+@inject RealEstatePro.Services.ITranslationService TranslationService
+@{
+    ViewData["Title"] = "My Properties";
+    var currentCulture = Context.Request.Cookies["Language"] ?? "en";
+    var t = TranslationService.GetTranslations(currentCulture);
+}
+
+<div class="container" style="padding: 2rem 1.25rem;">
+    <div class="section-header">
+        <h1 class="section-title">@t["my_properties"]</h1>
+        <a asp-action="Create" class="btn btn-primary">@t["add_property"]</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="glass-panel" style="text-align: center; padding: 4rem;">
+            <p style="font-size: 1.25rem; color: var(--text-light); margin-bottom: 0.5rem;">@t["no_properties"]</p>
+            <p style="color: var(--text-light);">@t["be_first"]</p>
+            <a asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;">@t["add_property"]</a>
+        </div>
+    }
+    else
+    {
+        <div class="property-grid">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                    <img src="@item.ImageUrl" alt="@item.Title" class="card-img" 
+                         onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop'" />
+                    <div class="card-body">
+                        <div class="card-price">
+                            @item.Price.ToString("N0") <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-light);">@t["sar"]</span>
+                        </div>
+                        <h3 class="card-title">@item.Title</h3>
+                        <div class="card-features">
+                            <span class="feature">🛏️ @item.Bedrooms</span>
+                            <span class="feature">🛁 @item.Bathrooms</span>
+                            <span class="feature">📏 @item.Area @t["sqm"]</span>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-light);">
+                            <span>📍 @item.Location</span>
+                            <span>🏷️ @t[item.PropertyType]</span>
+                        </div>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary" style="width: 100%;">@t["view_details"]</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

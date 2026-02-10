@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Mshari2237\\Desktop\\RealEstatePro\\RealEstatePro\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.RealEstatePro.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.RealEstatePro.props",
+      "PackagePath": "build\\RealEstatePro.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.RealEstatePro.props",
+      "PackagePath": "buildMultiTargeting\\RealEstatePro.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.RealEstatePro.props",
+      "PackagePath": "buildTransitive\\RealEstatePro.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

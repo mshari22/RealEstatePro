@@ -1,0 +1,126 @@
+@model RealEstatePro.ViewModels.PropertyCreateViewModel
+@inject RealEstatePro.Services.ITranslationService TranslationService
+@{
+    ViewData["Title"] = "Add Property";
+    var currentCulture = Context.Request.Cookies["Language"] ?? "en";
+    var t = TranslationService.GetTranslations(currentCulture);
+}
+
+<div class="container" style="padding: 2rem 1.25rem;">
+    <div class="form-container" style="max-width: 800px;">
+        <h2 style="margin-bottom: 2rem;">@t["add_property"]</h2>
+        
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="Title" class="form-label">@t["property_title"]</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label asp-for="Price" class="form-label">@t["price"] (@t["sar"])</label>
+                    <input asp-for="Price" class="form-control" type="number" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Category" class="form-label">@t["category"]</label>
+                    <select asp-for="Category" class="form-control">
+                        <option value="apartment">@t["apartment"]</option>
+                        <option value="villa">@t["villa"]</option>
+                        <option value="land">@t["land"]</option>
+                        <option value="commercial">@t["commercial"]</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label asp-for="PropertyType" class="form-label">@t["property_type"]</label>
+                    <select asp-for="PropertyType" class="form-control">
+                        <option value="sale">@t["for_sale"]</option>
+                        <option value="rent">@t["for_rent"]</option>
+                    </select>
+                    <span asp-validation-for="PropertyType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Area" class="form-label">@t["area"] (@t["sqm"])</label>
+                    <input asp-for="Area" class="form-control" type="number" />
+                    <span asp-validation-for="Area" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label asp-for="Bedrooms" class="form-label">@t["bedrooms"]</label>
+                    <input asp-for="Bedrooms" class="form-control" type="number" />
+                    <span asp-validation-for="Bedrooms" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Bathrooms" class="form-label">@t["bathrooms"]</label>
+                    <input asp-for="Bathrooms" class="form-control" type="number" />
+                    <span asp-validation-for="Bathrooms" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Location" class="form-label">@t["location"]</label>
+                <input asp-for="Location" class="form-control" placeholder="@(currentCulture == "ar" ? "مثال: حي النرجس، الرياض" : "e.g. Al-Narjis, Riyadh")" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">@t["select_location"]</label>
+                <div id="map" style="height: 350px; width: 100%; border-radius: 0.75rem; z-index: 1; border: 1px solid var(--border-color);"></div>
+                <p class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem;">@t["click_map_hint"]</p>
+                
+                <input type="hidden" asp-for="Latitude" id="Latitude" />
+                <input type="hidden" asp-for="Longitude" id="Longitude" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="form-label">@t["upload_image"]</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Description" class="form-label">@t["description"]</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">@t["add_property"]</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var map = L.map('map').setView([24.7136, 46.6753], 12);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            var marker;
+
+            function onMapClick(e) {
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                marker = L.marker(e.latlng).addTo(map);
+                document.getElementById('Latitude').value = e.latlng.lat;
+                document.getElementById('Longitude').value = e.latlng.lng;
+            }
+
+            map.on('click', onMapClick);
+        });
+    </script>
+}
