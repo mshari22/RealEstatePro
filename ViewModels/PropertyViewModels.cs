@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using RealEstatePro.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace RealEstatePro.ViewModels;
 
@@ -51,4 +53,8 @@ public class PropertyCreateViewModel
     
     [Display(Name = "Image URL")]
     public string? ImageUrl { get; set; }
+    
+    [Display(Name = "Upload Image")]
+    [NotMapped]
+    public IFormFile? ImageFile { get; set; } // New: Not mapped to database
 }

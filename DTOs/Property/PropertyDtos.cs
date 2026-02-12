@@ -17,6 +17,7 @@ public class PropertyDto
     public int Bathrooms { get; set; }
     public double Area { get; set; }
     public string? ImageUrl { get; set; }
+    public string? ImagePath { get; set; }
     public DateTime CreatedAt { get; set; }
     public int UserId { get; set; }
     public string OwnerName { get; set; } = string.Empty;
@@ -60,6 +61,7 @@ public class CreatePropertyDto
     
     [MaxLength(500)]
     public string? ImageUrl { get; set; }
+    public string? ImagePath { get; set; }
 }
 
 public class UpdatePropertyDto : CreatePropertyDto

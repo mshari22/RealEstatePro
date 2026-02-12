@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Azure.Storage.Blobs;
+using Azure.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace RealEstatePro.Models;
 
@@ -43,6 +46,9 @@ public class Property
     [MaxLength(500)]
     public string? ImageUrl { get; set; }
     
+    [MaxLength(500)]
+    public string? ImagePath { get; set; } // New: Local file path
+    
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     // Foreign key
@@ -52,4 +58,6 @@ public class Property
     public User User { get; set; } = null!;
     
     public ICollection<PropertyRequest> Requests { get; set; } = new List<PropertyRequest>();
+
+// Methods removed for clarity and correctness
 }

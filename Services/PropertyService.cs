@@ -80,6 +80,7 @@ public class PropertyService : IPropertyService
             Bathrooms = dto.Bathrooms,
             Area = dto.Area,
             ImageUrl = dto.ImageUrl,
+            ImagePath = dto.ImagePath, // New
             UserId = userId,
             CreatedAt = DateTime.UtcNow
         };
@@ -149,6 +150,7 @@ public class PropertyService : IPropertyService
             Bathrooms = property.Bathrooms,
             Area = property.Area,
             ImageUrl = property.ImageUrl,
+            ImagePath = property.ImagePath,
             CreatedAt = property.CreatedAt,
             UserId = property.UserId,
             OwnerName = property.User?.FullName ?? "Unknown"
