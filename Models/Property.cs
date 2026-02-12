@@ -49,6 +49,9 @@ public class Property
     [MaxLength(500)]
     public string? ImagePath { get; set; } // New: Local file path
     
+    [NotMapped]
+    public IFormFile? ImageFile { get; set; }
+    
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     // Foreign key

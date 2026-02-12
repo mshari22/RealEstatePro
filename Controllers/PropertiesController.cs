@@ -90,6 +90,33 @@ public class PropertiesController : Controller
         
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         
+        if (model.ImageFile != null && model.ImageFile.Length > 0)
+        {
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var extension = Path.GetExtension(model.ImageFile.FileName).ToLowerInvariant();
+            
+            if (!allowedExtensions.Contains(extension))
+            {
+                ModelState.AddModelError("ImageFile", "Only .jpg, .jpeg, .png, and .gif files are allowed.");
+                return View(model);
+            }
+            
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            
+            if (!Directory.Exists(uploadPath))
+                Directory.CreateDirectory(uploadPath);
+                
+            var filePath = Path.Combine(uploadPath, fileName);
+            
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.ImageFile.CopyToAsync(stream);
+            }
+            
+            model.ImageUrl = $"/images/{fileName}";
+        }
+
         var createDto = new CreatePropertyDto
         {
             Title = model.Title,
@@ -103,7 +130,8 @@ public class PropertiesController : Controller
             Bedrooms = model.Bedrooms,
             Bathrooms = model.Bathrooms,
             Area = model.Area,
-            ImageUrl = model.ImageUrl
+            ImageUrl = model.ImageUrl,
+            ImagePath = model.ImageUrl // Using ImageUrl for consistency, or use filePath if physical path needed
         };
         
         var property = await _propertyService.CreatePropertyAsync(createDto, userId);

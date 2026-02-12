@@ -39,8 +39,10 @@
                 @foreach (var item in Model)
                 {
                     <div class="card">
-                        <img src="@item.ImageUrl" alt="@item.Title" class="card-img" 
-                             onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop'" />
+                        <div class="card-img-wrapper">
+                            <img src="@item.ImageUrl" alt="@item.Title" class="card-img" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop'" />
+                        </div>
                         <div class="card-body">
                             <div class="card-price">
                                 @item.Price.ToString("N0") <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-light);">@t["sar"]</span>

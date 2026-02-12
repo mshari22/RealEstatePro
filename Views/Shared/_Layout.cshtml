@@ -29,7 +29,11 @@
         <div class="container nav-content">
             <a asp-controller="Home" asp-action="Index" class="nav-brand">🏢 Object</a>
             
-            <div class="nav-links">
+            <button class="mobile-toggle" onclick="toggleMenu()">
+                ☰
+            </button>
+
+            <div class="nav-links" id="navLinks">
                 <a asp-controller="Home" asp-action="Index" class="nav-link">@t["nav_home"]</a>
                 <a asp-controller="Properties" asp-action="Index" class="nav-link">@t["nav_browse"]</a>
                 
@@ -38,13 +42,13 @@
                     <a asp-controller="Properties" asp-action="Create" class="nav-link">@t["nav_dashboard"]</a>
                     <a asp-controller="Properties" asp-action="MyProperties" class="nav-link">@t["my_properties"]</a>
                     <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-outline" style="padding: 0.35rem 0.85rem; font-size: 0.85rem;">@t["nav_logout"]</button>
+                        <button type="submit" class="btn btn-outline" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; width: 100%;">@t["nav_logout"]</button>
                     </form>
                 }
                 else
                 {
                     <a asp-controller="Account" asp-action="Login" class="nav-link">@t["nav_login"]</a>
-                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">@t["nav_signup"]</a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem; width: 100%; justify-content: center;">@t["nav_signup"]</a>
                 }
                 
                 <div class="language-selector">
@@ -71,6 +75,12 @@
                     </select>
                 </div>
             </div>
+
+            <script>
+                function toggleMenu() {
+                    document.getElementById('navLinks').classList.toggle('active');
+                }
+            </script>
         </div>
     </nav>
 
